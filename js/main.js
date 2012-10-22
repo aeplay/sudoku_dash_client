@@ -25,6 +25,11 @@ $(document).ready(function(){
 		fadeOut($('#chat'));
 	};
 
+	// remote js debugging with jsconsole.com
+	if(window.location.hash === '#js_debug'){
+		$('body').append('<script src="http://jsconsole.com/remote.js?sdd_debug"></script>');
+	}
+
 	// WEBSOCKET
 	var host;
 	if(window.location.protocol === 'file:'){
