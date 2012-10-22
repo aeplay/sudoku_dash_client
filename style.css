@@ -1,0 +1,431 @@
+*{ 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	cursor: default;
+	margin: 0;
+	padding: 0;
+	border: none;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	font-size: inherit;
+	font-weight: normal;
+}
+
+body{
+	font-family: 'Maven Pro', sans;
+	font-size: 100%;
+	text-align: center;
+}
+
+h1{
+	margin-bottom: 1em;
+}
+
+p, ul{
+	margin-bottom: 1em;
+}
+
+li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	margin-bottom: 0.4em;
+}
+
+b{
+	font-weight: bold;
+}
+
+em{
+	font-weight: 500;
+	font-style: normal;
+}
+
+a{
+	color: #00c;
+	cursor: pointer;
+}
+
+#title{
+	text-align: center;
+	margin-top: 3em;
+	margin-bottom: 2em;
+}
+
+#intro{
+	text-align: center;
+	max-width: 18em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.error{
+	color: #a55;
+	cursor: text;
+}
+
+#guest_login{
+	max-width: 10em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input, button{
+	font-family: 'Maven Pro', sans;
+	font-size: 1em;
+	display: block;
+	width: 100%;
+	padding: 0.5em;
+	outline: none;
+	border-radius: 0.2em;
+	margin-bottom: 0.5em;
+}
+
+input{
+	cursor: text;
+	border: 0.1em solid #aaa;
+
+	-webkit-touch-callout: text;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}
+
+input:hover{
+	border: 0.1em solid #888;
+}
+
+input:focus{
+	border: 0.1em solid #555;
+}
+
+button{
+	background-color: #888;
+	color: #444;
+	border-radius: 0.2em;
+	font-weight: 500;
+	border: 0.1em solid #777;
+	border-top: 0.1em solid #aaa;
+	border-bottom: 0.1em solid #555;
+}
+
+button.good{
+	cursor: pointer;
+	background-color: #5a5;
+	color: #050;
+	border: 0.1em solid #494;
+	border-top: 0.1em solid #8c8;
+	border-bottom: 0.1em solid #383;
+}
+
+button.good:hover{
+	background-color: #5b5;
+}
+
+button.good:active{
+	border: 0.1em solid #030;
+}
+
+.color_1{
+	color: #ff6c00;
+}
+
+.color_2{
+	color: #005baf;
+}
+
+.color_3{
+	color: #00b09d;
+}
+
+.color_4{
+	color: #7a51ff;
+}
+
+.color_5{
+	color: #4c9a00;
+}
+
+.color_6{
+	color: #c43d99;
+}
+
+#board{
+	position: relative;
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1em;
+	border: 0.15em solid #666;
+	border-radius: 0.2em;
+	outline: 0.1em solid #666;
+	outline-offset: -0.2em;
+	z-index: 2;
+	
+}
+
+#board table{
+	border-collapse: collapse;
+	border-spacing: 0;
+	table-layout: fixed;
+}
+
+#board .cell{
+	width: 1.8em;
+	min-width: 1.8em;
+	height: 1.8em;
+	min-height: 1.8em;
+	overflow: hidden;
+	text-align: center;
+	border: 0.1em solid #a8a8a8;
+	font-size: 1.1em;
+	-webkit-transition: background-color 0.15s ease-in;
+}
+
+#board .cell.empty{
+	cursor: pointer;
+	background-color: #fff;
+}
+
+#board .cell.empty:hover{
+	background-color: #ddd;
+}
+
+#board .cell div{
+	width: 1.4em;
+	height: 1.4em;
+	line-height: 1.4em;
+	margin-left: 0.15em;
+	background-color: #fff;
+	border-radius: 0.2em;
+}
+
+#board .cell.empty div{
+	cursor: pointer;
+}
+
+#board .cell.given{
+	color: #333;
+}
+
+#board .cell.solved{
+	font-family: 'Julee', serif;
+	line-height: 1.4em;
+}
+
+#board .cell.good{
+	background-color: #4f4;
+}
+
+#board .cell.bad{
+	background-color: #f44;
+}
+
+#board .cell.ambigous, #board .cell:hover.ambigous{
+	background-color: #f44;
+}
+
+#board .cell.ambigous div{
+	color: #f44;
+	font-weight: bold;
+}
+
+#board .cell.already_filled{
+	background-color: #fc0;
+}
+
+#ambigous_message{
+	position: absolute;
+	color: #f44;
+	bottom: -1.3em;
+	width: 100%;
+}
+
+#guesser_background{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #fff;
+	opacity: 0.5;
+	-webkit-transition: opacity 0.1s linear;
+	z-index: 4;
+}
+
+#guesser_background:hover{
+	opacity: 0.3;
+}
+
+#guesser{
+	position: absolute;
+	border-radius: 0.2em;
+	color: #888;
+	box-shadow: 0 -0.05em 0.5em rgba(0,0,0,0.5), 0 0 0 0.1em rgba(0,0,0,0.15);
+	border: 0.1em solid #eee;
+	border-bottom: 0.1em solid #ddd;
+	border-top: 0.1em solid #fff;
+	font-family: 'Julee', serif;
+	z-index: 5;
+	
+}
+
+#guesser table{
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-style: hidden;
+	table-layout: fixed;
+	background-color: #eee;
+	-webkit-transition: opacity 0.15s ease-in;
+	opacity: 0.3;
+
+}
+
+#guesser:hover table{
+	-webkit-transition: opacity 0s ease-in;
+	opacity: 1;
+}
+
+#guesser table td{
+	width: 1.7em;
+	min-width: 1.7em;
+	height: 1.7em;
+	min-height: 1.7em;
+	border: 0.1em solid #ddd;
+	cursor: pointer;
+}
+
+#guesser table td:hover{
+	background-color: #e4e4e4;
+	color: #444;
+}
+
+#chat{
+	position: relative;
+	width: 19.8em;
+	height: 8.3em;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+
+#chat .content{
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	padding-top: 0.2em;
+	padding-bottom: 0.1em;
+}
+
+#chat p{
+	position: relative;
+	padding-top: 0.2em;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	border-top: 0.1em solid #ddd;
+	margin-bottom: 0.3em;
+	color: #555;
+	overflow: hidden;
+}
+
+#chat p .time{
+	float: right;
+	padding: 0.1em 0;
+	font-family: monospace;
+	color: #bbb;
+}
+
+#chat p .player{
+	font-weight: 500;
+}
+
+#chat p.last_chat_message .time{
+	color: #888;
+}
+
+#chat_form{
+	position: relative;
+	z-index: 2;
+}
+
+#chat_form input{
+	border-color: #d8d8d8;
+	margin: 0;
+}
+
+#chat_form input:hover{
+	border-color: #bbb;
+}
+
+#chat_form input:focus{
+	border-color: #aaa;
+}
+
+#round{
+	margin-bottom: 3em;
+	box-shadow: 0 2.4em 0 #fff, 0 2.6em 0 rgba(255, 255, 255, 0.6);
+	z-index: 2;
+}
+
+#round .player{
+	display: inline-block;
+	position: relative;
+	border-right: 0.1em solid #ddd;
+	width: 3.5em;
+	height: 3em;
+	overflow: hidden;
+}
+
+#round .player *{
+	opacity: 0.5;
+}
+
+#round .player.online *{
+	opacity: 1;
+}
+
+#round .player:last-child{
+	border-right: none;
+}
+
+#round .player .name{
+	font-size: 0.8em;
+}
+
+#round .player .points{
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	font-size: 1.2em;
+}
+
+#profile{
+	position: absolute;
+	top: 14em;
+	left: 50%;
+	margin-left: 12em;
+	width: 11em;
+	color: #555;
+}
+
+#profile .feature{
+	position: relative;
+	height: 13.8em;
+	margin-bottom: 1em;
+	background-color: #ddd;
+	border-radius: 0.2em;
+	background-image: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/bedge_grunge.png);
+}
+
+#profile .feature p{
+	position: absolute;
+	margin-bottom: 0;
+	bottom: 0.5em;
+}
