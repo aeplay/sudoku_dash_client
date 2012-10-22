@@ -28,7 +28,7 @@ $(document).ready(function(){
 	// WEBSOCKET
 	var host;
 	if(window.location.protocol === 'file:'){
-		host = 'localhost';
+		host = 'localhost:2739';
 	}else{
 		host = window.location.host;
 	}
