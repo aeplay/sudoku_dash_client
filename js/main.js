@@ -26,8 +26,14 @@ $(document).ready(function(){
 	};
 
 	// WEBSOCKET
+	var host;
+	if(window.location.protocol === 'file:'){
+		host = 'localhost';
+	}else{
+		host = window.location.host;
+	}
 
-	var websocket = new WebSocket('ws://localhost/websocket');
+	var websocket = new WebSocket('ws://'+host+'/websocket');
 
 	$('#js_ws_note').remove();
 
