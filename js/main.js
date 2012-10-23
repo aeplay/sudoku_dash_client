@@ -71,7 +71,7 @@ $(document).ready(function(){
 	};
 
 	var retryWithNextPortTimeout = setTimeout(function(){
-		localStorage['portN'] = (localStorage['portN'] + 1) % ports.length;
+		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 3000);
 
