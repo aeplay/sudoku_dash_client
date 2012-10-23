@@ -80,6 +80,7 @@ $(document).ready(function(){
 
 	server.on('hello', function(){
 		clearTimeout(retryWithNextPortTimeout);
+		console.log('Timeout 1 cancelled.');
 	});
 
 	// LOGIN
@@ -161,6 +162,7 @@ $(document).ready(function(){
 
 	server.on('login_ok', function(){
 		clearTimeout(retryWithNextPortTimeout2);
+		console.log('Timeout 2 cancelled.');
 
 		localStorage['me'] = JSON.stringify(me);
 		sessionStorage['me'] = JSON.stringify(me);
