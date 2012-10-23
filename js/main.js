@@ -73,7 +73,7 @@ $(document).ready(function(){
 	};
 
 	var retryWithNextPortTimeout = setTimeout(function(){
-		alert('Connection issues, retrying with another port.');
+		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 3000);
@@ -154,8 +154,7 @@ $(document).ready(function(){
 	}
 
 	var retryWithNextPortTimeout2 = setTimeout(function(){
-		alert('Connection issues, retrying with another port.');
-		localStorage['me'] = JSON.stringify(me);
+		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 5000);
