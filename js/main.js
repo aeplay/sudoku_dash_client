@@ -31,6 +31,9 @@ $(document).ready(function(){
 		host = 'localhost:2739';
 	}else{
 		host = window.location.host;
+		if(window.location.hash === '#3g'){
+			host+=':2739';
+		}
 	}
 
 	var websocket = new WebSocket('ws://'+host+'/websocket');
