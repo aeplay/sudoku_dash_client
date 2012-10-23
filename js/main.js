@@ -155,7 +155,7 @@ $(document).ready(function(){
 
 	var retryWithNextPortTimeout2 = setTimeout(function(){
 		alert('Connection issues, retrying with another port.');
-		sessionStorage['me'] = JSON.stringify(me);
+		localStorage['me'] = JSON.stringify(me);
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 5000);
