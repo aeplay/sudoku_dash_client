@@ -74,6 +74,7 @@ $(document).ready(function(){
 
 	var retryWithNextPortTimeout = setTimeout(function(){
 		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
+		console.log('Timeout 1 fired.');
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 3000);
@@ -84,6 +85,13 @@ $(document).ready(function(){
 	});
 
 	// LOGIN
+	var retryWithNextPortTimeout2;
+	var retryWithNextPortTimeout2fn = function(){
+		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
+		console.log('Timeout 2 fired.');
+		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
+		window.location = window.location;
+	};
 
 	var me;
 	if(localStorage['me']){
@@ -97,6 +105,7 @@ $(document).ready(function(){
 		fadeIn($('#ws_connecting'));
 		server.on('hello', function(){
 			server.send(['login', me]);
+			retryWithNextPortTimeout2 = setTimeout(retryWithNextPortTimeout2fn, 5000);
 			fadeOutAndRemove($("#ws_connecting"));
 		});
 	}else{
@@ -150,14 +159,9 @@ $(document).ready(function(){
 				me = ['guest', guestName, generateUUID()];
 			}
 			server.send(['login', me]);
+			retryWithNextPortTimeout2 = setTimeout(retryWithNextPortTimeout2fn, 5000);
 		};
 	}
-
-	var retryWithNextPortTimeout2 = setTimeout(function(){
-		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
-		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
-		window.location = window.location;
-	}, 5000);
 
 	server.on('login_ok', function(){
 		clearTimeout(retryWithNextPortTimeout2);
