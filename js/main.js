@@ -37,7 +37,7 @@ $(document).ready(function(){
 		if(!localStorage['portN']){
 			localStorage['portN'] = 0;
 		}
-		host += ':' + ports(parseInt(localStorage['portN']));
+		host += ':' + ports[parseInt(localStorage['portN'])];
 	}
 
 	var websocket = new WebSocket('ws://'+host+'/websocket');
