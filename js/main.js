@@ -27,13 +27,17 @@ $(document).ready(function(){
 
 	// WEBSOCKET
 	var host;
+
+	var ports = [80, 2739];
+
 	if(window.location.protocol === 'file:'){
 		host = 'localhost:2739';
 	}else{
 		host = window.location.host;
-		if(window.location.hash === '#3g'){
-			host+=':2739';
+		if(!localStorage['portN']){
+			localStorage['portN'] = 0;
 		}
+		host += ':' + ports(parseInt(localStorage['portN']));
 	}
 
 	var websocket = new WebSocket('ws://'+host+'/websocket');
@@ -66,6 +70,14 @@ $(document).ready(function(){
 		ready: function(){return websocket.readyState === 1}
 	};
 
+	var retryWithNextPortTimeout = setTimeout(function(){
+		localStorage['portN'] = (localStorage['portN'] + 1) % ports.length;
+	}, 3000);
+
+	server.on('hello', function(){
+		clearTimeout(retryWithNextPortTimeout);
+	});
+
 	// LOGIN
 
 	var me;
@@ -78,10 +90,10 @@ $(document).ready(function(){
 	if(sessionStorage['me']){
 		$('#intro').hide();
 		fadeIn($('#ws_connecting'));
-		websocket.onopen = function(){
+		server.on('hello', function(){
 			server.send(['login', me]);
 			fadeOutAndRemove($("#ws_connecting"));
-		};
+		});
 	}else{
 		setTimeout(function(){
 			fadeIn($('#guest_login'));
@@ -107,10 +119,10 @@ $(document).ready(function(){
 		}
 
 
-		websocket.onopen = function(){
+		server.on('hello', function(){
 			fadeOutAndRemove($("#ws_connecting"));
 			checkEnteredName();
-		};
+		});
 		$('#guest_login #name').on('keyup', checkEnteredName);
 
 		$('#guest_login').on('submit', function(event){
