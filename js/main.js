@@ -163,6 +163,15 @@ $(document).ready(function(){
 		};
 	}
 
+	server.on('login_invalid', function(){
+		clearTimeout(retryWithNextPortTimeout2);
+		console.log('Timeout 2 cancelled.');
+		
+		localStorage.removeItem('me');
+		alert('invalid login.');
+		window.location = window.location;
+	});
+
 	server.on('login_ok', function(){
 		clearTimeout(retryWithNextPortTimeout2);
 		console.log('Timeout 2 cancelled.');
