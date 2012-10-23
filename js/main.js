@@ -71,6 +71,7 @@ $(document).ready(function(){
 	};
 
 	var retryWithNextPortTimeout = setTimeout(function(){
+		alert('Connection issues, retrying with another port.');
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 		window.location = window.location;
 	}, 3000);
@@ -149,9 +150,16 @@ $(document).ready(function(){
 		};
 	}
 
-	
+	var retryWithNextPortTimeout2 = setTimeout(function(){
+		alert('Connection issues, retrying with another port.');
+		sessionStorage['me'] = JSON.stringify(me);
+		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
+		window.location = window.location;
+	}, 5000);
 
 	server.on('login_ok', function(){
+		clearTimeout(retryWithNextPortTimeout2);
+
 		localStorage['me'] = JSON.stringify(me);
 		sessionStorage['me'] = JSON.stringify(me);
 		$('#guest_login').remove();
