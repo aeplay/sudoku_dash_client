@@ -73,9 +73,9 @@ $(document).ready(function(){
 	};
 
 	var retryWithNextPortTimeout = setTimeout(function(){
-		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		console.log('Timeout 1 fired.');
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
+		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		window.location = window.location;
 	}, 3000);
 
@@ -87,9 +87,9 @@ $(document).ready(function(){
 	// LOGIN
 	var retryWithNextPortTimeout2;
 	var retryWithNextPortTimeout2fn = function(){
-		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		console.log('Timeout 2 fired.');
 		localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
+		alert('Connection issues, retrying with port ' + ports[parseInt(localStorage['portN'])]);
 		window.location = window.location;
 	};
 
