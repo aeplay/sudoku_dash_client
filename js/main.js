@@ -48,7 +48,6 @@ $(document).ready(function(){
 		$('#ws_error_code').html(event.code);
 		$('#ws_error').show();
 		removeNormalUI();
-		clearTimeout(retryWithNextPortTimeout);
 		clearTimeout(retryWithNextPortTimeout2);
 	};
 
