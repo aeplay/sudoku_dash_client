@@ -33,7 +33,7 @@ $(document).ready(function(){
 	if(window.location.protocol === 'file:'){
 		host = 'localhost:2739';
 	}else{
-		host = window.location.host;
+		host = 'darwin.'+window.location.host;
 		if(!localStorage['portN']){
 			localStorage['portN'] = 0;
 		}
