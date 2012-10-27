@@ -242,9 +242,7 @@ $(document).ready(function(){
 		$("#chat").nanoScroller({ scroll: 'bottom' });
 	};
 
-	var pointsPerPlayer = {};
 	var onlinePlayers = {};
-
 	var lastHistoryIndex = 0;
 
 	server.on('history_update', function(historyContainer){
@@ -265,18 +263,18 @@ $(document).ready(function(){
 				});
 				appendToChat('Game started.', event[1]);
 			}else if(event[0] === 'joined'){
-				var player = event[2][0];
-
-				if(!pointsPerPlayer[player]){
-					pointsPerPlayer[player] = 0;
-				}
-
-				onlinePlayers[player] = true;
+				// no need to do anything really?
 			}else if(event[0] === 'left'){
 				var player = event[2][0];
-				delete onlinePlayers[player];
+
+				if(onlinePlayers[player]){
+					onlinePlayers[player] = false;
+				}
 			}else if(event[0] === 'chat'){
 				var player = event[2][0];
+
+				onlinePlayers[player] = true;
+
 				var name = player[1];
 
 				// escape magic
@@ -286,6 +284,9 @@ $(document).ready(function(){
 			}else if(event[0] === 'guess'){
 				var result = event[5][0];
 				var player = event[4][0];
+
+				onlinePlayers[player] = true;
+
 				if(result === 'good'){
 					var pos = event[2];
 					var num = event[3];
@@ -297,56 +298,19 @@ $(document).ready(function(){
 					boardCell.addClass(colorize(player));
 					boardCell.attr('title', name);
 
-					pointsPerPlayer[player] += 1;
-
 					if(guessPos === pos){
 						$('#guesser_background').click();
 					}
 				}else{
-					pointsPerPlayer[player] -= 1;
+					// TODO: TILT
 				}
 			}else if(event[0] === 'complete'){
-				var winners = [];
-				var highestPoints = 0;
-				Object.keys(pointsPerPlayer).forEach(function(player){
-					var points = pointsPerPlayer[player];
-					if(points > highestPoints){
-						winners = [player];
-						highestPoints = points;
-					}else if(points === highestPoints){
-						winners.push(player);
-					}
-				});
-
-				console.log('winners');
-				console.log(winners);
-
-				var text = 'Game over.';
-
-				if(highestPoints > 0 && Object.keys(pointsPerPlayer).length > 1){
-					text += '</br>'
-					winners.forEach(function(winner, i){
-						winner = winner.split(',');
-						text += '<span class="'+colorize(winner)+'">'+winner[1]+'</span>';
-						if(i === winners.length-2){
-							text += ' and ';
-						}else if(i < winners.length-2){
-							text += ', ';
-						}
-					});
-
-					if(winners.length === 1){
-						text += ' wins.'
-					}else{
-						text += ' win.'
-					}
-				}
-
-				appendToChat(text, event[1]);
+				appendToChat('Game complete.', event[1]);
+				// TODO: don't show error when game exits
 			}
 		});
 
-		updatePointsDisplay(pointsPerPlayer, onlinePlayers, me);
+		updateOnlinePlayers(onlinePlayers);
 	});
 
 	// GUESSING
@@ -409,14 +373,25 @@ $(document).ready(function(){
 			}, 700);
 		}else if(result === 'bad'){
 			var conflicts = resultArray[0][1];
+
+			$('#tilt_background').addClass('active');
+			setTimeout(function(){
+				$('#tilt_background').removeClass('active');
+			}, 2000);
+
 			conflicts.forEach(function(pos){
 				var boardCell = $('#board_'+pos);
 				boardCell.addClass('bad');
 				setTimeout(function(){
 					boardCell.removeClass('bad');
-				}, 700);
+				}, 2000);
 			});
 		}else if(result === 'ambigous'){
+			$('#tilt_background').addClass('active');
+			setTimeout(function(){
+				$('#tilt_background').removeClass('active');
+			}, 3000);
+
 			var boardCell = $('#board_'+lastGuessPos);
 			boardCell.addClass('ambigous');
 			boardCell.children('div').html('?');
@@ -426,10 +401,12 @@ $(document).ready(function(){
 				if(boardCell.children('div').html() === '?'){
 					boardCell.children('div').html('');
 				}
-			}, 1000);
+			}, 3000);
 			setTimeout(function(){
 				fadeOut($('#ambigous_message'));
 			}, 3000);
+
+
 		}else if(result === 'already_filled'){
 			var boardCell = $('#board_'+lastGuessPos);
 			boardCell.addClass('already_filled');

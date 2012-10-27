@@ -309,6 +309,25 @@ button.good:active{
 	color: #444;
 }
 
+#tilt_background{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #f00;
+	opacity: 0;
+	-webkit-transition: opacity 0.1s linear;
+	z-index: -1;
+}
+
+#tilt_background.active{
+	display: block;
+	opacity: 0.1;
+	z-index: 4;
+	cursor: not-allowed;
+}
+
 #chat{
 	position: relative;
 	width: 19.8em;
@@ -370,40 +389,21 @@ button.good:active{
 }
 
 #round{
-	margin-bottom: 3em;
-	box-shadow: 0 2.4em 0 #fff, 0 2.6em 0 rgba(255, 255, 255, 0.6);
+	width: 19em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1em;
+	box-shadow: 0 0.4em 0 #fff, 0 2.6em 0 rgba(255, 255, 255, 0.6);
 	z-index: 2;
 }
 
 #round .player{
-	display: inline-block;
-	position: relative;
-	border-right: 0.1em solid #ddd;
-	width: 3.5em;
-	height: 3em;
-	overflow: hidden;
+	display:inline-block;
+	margin: 0.25em 0.5em;
 }
 
-#round .player *{
-	opacity: 0.5;
-}
-
-#round .player.online *{
-	opacity: 1;
-}
-
-#round .player:last-child{
-	border-right: none;
-}
-
-#round .player .name{
-	font-size: 0.8em;
-}
-
-#round .player .points{
-	margin-top: 0.2em;
-	margin-bottom: 0.2em;
-	font-size: 1.2em;
+#round .player.offline{
+	text-decoration: line-through;
 }
 
 #profile{

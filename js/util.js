@@ -13,7 +13,7 @@ var fadeOutAndRemove = function(el, callback){
 		el.remove();
 		callback && callback();
 	}, 510);
-}
+};
 
 var fadeIn = function(el){
 	el.hide();
@@ -43,14 +43,14 @@ var fadeInWithoutHiding = function(el){
 var timestampToTimeDiv = function(timestamp){
 	var date = moment(new Date(timestamp[0]*1000000*1000 + timestamp[1]*1000));
 	return '<span class="time" title="'+date.format('LLLL')+'">'+date.format('H:mm:ss')+'</span>';
-}
+};
 
 jQuery.fn.center = function (obj) {
   var loc = obj.offset();
   this.css("top",(obj.outerHeight() - this.outerHeight()) / 2 + loc.top + 'px');
   this.css("left",(obj.outerWidth() - this.outerWidth())  / 2 + loc.left+ 'px');
   return this;
-}
+};
 
 
 var playerToColorMaps = {};
@@ -63,35 +63,18 @@ var colorize = function(player){
 		nextColor = (nextColor+1)%colorClasses.length;
 	}
 	return playerToColorMaps[player];
-}
+};
 
-
-var updatePointsDisplay = function(pointsPerPlayer, onlinePlayers, me){
+var updateOnlinePlayers = function(onlinePlayers){
 	$('#round').html('');
-	Object.keys(pointsPerPlayer).sort(function(a, b){
-		var comp = pointsPerPlayer[a] - pointsPerPlayer[b];
-		if(comp === 0){
-			// sort by player id
-			return a[2] > b[2] ? 1 : -1;
-		}
-		return comp;
-	}).forEach(function(player, i){
+	Object.keys(onlinePlayers).forEach(function(player){
 		player = player.split(',');
-		var el = $(
-			'<div class="player">'+
-			'<div class="points">'+pointsPerPlayer[player]+'</div>'+
-			'<div class="name '+colorize(player)+'">'+player[1]+'</div>'+
-			'</div>'
-		);
-		if(!(player > me || player < me)){
-			el.addClass('me');
-		}
-		if(onlinePlayers[player]){
-			el.addClass('online');
-			el.attr('title', 'online');
-		}else{
+		var name = player[1];
+		var el = $('<span class="player '+colorize(player)+'">'+name+'</span>');
+		if(!onlinePlayers[player]){
+			el.addClass('offline');
 			el.attr('title', 'offline');
 		}
 		el.appendTo('#round');
 	});
-}
+};
