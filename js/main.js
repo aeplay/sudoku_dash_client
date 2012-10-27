@@ -179,6 +179,9 @@ $(document).ready(function(){
 		localStorage['me'] = JSON.stringify(me);
 		sessionStorage['me'] = JSON.stringify(me);
 		$('#guest_login').remove();
+		if(Modernizr.touch){
+			fadeOutAndRemove($('#title'));
+		}
 		fadeOutAndRemove($('#intro'), function(){
 			fadeIn($('#board'));
 			fadeIn($('#round'));
@@ -263,17 +266,13 @@ $(document).ready(function(){
 				});
 				appendToChat('Game started.', event[1]);
 			}else if(event[0] === 'joined'){
-				// no need to do anything really?
+				var player = event[2][0];
+				onlinePlayers[player] = true;
 			}else if(event[0] === 'left'){
 				var player = event[2][0];
-
-				if(onlinePlayers[player]){
-					onlinePlayers[player] = false;
-				}
+				onlinePlayers[player] = false;
 			}else if(event[0] === 'chat'){
 				var player = event[2][0];
-
-				onlinePlayers[player] = true;
 
 				var name = player[1];
 
@@ -284,8 +283,6 @@ $(document).ready(function(){
 			}else if(event[0] === 'guess'){
 				var result = event[5][0];
 				var player = event[4][0];
-
-				onlinePlayers[player] = true;
 
 				if(result === 'good'){
 					var pos = event[2];
