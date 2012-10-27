@@ -33,7 +33,7 @@ $(document).ready(function(){
 	if(window.location.protocol === 'file:'){
 		host = 'localhost:2739';
 	}else{
-		host = 'darwin.'+window.location.host;
+		host = 'darwin.sudokudash.com';
 		if(!localStorage['portN']){
 			localStorage['portN'] = 0;
 		}
@@ -332,13 +332,18 @@ $(document).ready(function(){
 		},0);
 	});
 
-	$('#guesser').on('click', 'td', function(event){
-		var num = parseInt($(event.target).text());
+	var guess = function(num){
 		server.send(['guess', guessPos, num]);
+		$('#board_'+guessPos).addClass('pending');
 		lastGuessPos = guessPos;
 		guessPos = undefined;
 		$('#guesser').hide();
 		$('#guesser_background').hide();
+	}
+
+	$('#guesser').on('click', 'td', function(event){
+		var num = parseInt($(event.target).text());
+		guess(num);
 	});
 
 	$('#guesser_background').on('click', function(event){
@@ -351,17 +356,14 @@ $(document).ready(function(){
 		if(guessPos){
 			var num = parseInt(String.fromCharCode(event.which));
 			if(num > 0 && num < 10){
-				server.send(['guess', guessPos, num]);
-				lastGuessPos = guessPos;
-				guessPos = undefined;
-				$('#guesser').hide();
-				$('#guesser_background').hide();
+				guess(num);
 			}
 		}
 	});
 
 	server.on('guess_result', function(resultArray){
 		var result = resultArray[0][0];
+		$('#board_'+lastGuessPos).removeClass('pending');
 		if(result === 'good'){
 			var boardCell = $('#board_'+lastGuessPos);
 			boardCell.addClass('good');

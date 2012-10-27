@@ -232,6 +232,10 @@ button.good:active{
 	line-height: 1.4em;
 }
 
+#board .cell.pending{
+	background-color: #ff0;
+}
+
 #board .cell.good{
 	background-color: #4f4;
 }
@@ -321,6 +325,13 @@ button.good:active{
 	min-height: 1.7em;
 	border: 0.1em solid #ddd;
 	cursor: pointer;
+}
+
+.touch #guesser table td{
+	width: 2em;
+	min-width: 2em;
+	height: 2em;
+	min-height: 2em;
 }
 
 #guesser table td:hover{
