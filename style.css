@@ -35,7 +35,7 @@ body{
 	position: relative;
 	min-height:100%;
 	min-height: 100%;
-	padding-top: 9em;
+	padding-top: 2em;
 	/* dependent on chat min-height and pos bottom! */
 	padding-bottom: 13.3em;
 	width: 21em;
@@ -77,9 +77,6 @@ a:hover{
 }
 
 #title{
-	position: absolute;
-	left: 0;
-	right: 0;
 	text-align: center;
 	margin-top: 1em;
 	margin-bottom: 2em;
@@ -380,7 +377,7 @@ button.good:active{
 
 #chat{
 	position: absolute;
-	top: 31.5em;
+	top: 33.5em;
 	bottom: 5em;
 	height: auto;
 	left: 50%;
@@ -388,6 +385,10 @@ button.good:active{
 	margin-left: -9.9em;
 	min-height: 8.3em;
 	text-align: left;
+}
+
+.touch #chat{
+	top: 24.5em;
 }
 
 #chat .content{
