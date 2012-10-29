@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var removeNormalUI = function(){
 		$('#intro').remove();
-		$('#guest_login').remove();
+		$('#login').remove();
 		$('#ws_connecting').remove();
 		$('#board').remove();
 		$('#guesser').remove();
@@ -11,11 +11,12 @@ $(document).ready(function(){
 		$('#round').remove();
 		$('#profile').remove();
 		$('#chat').remove();
+		$('#log_out').remove();
 	};
 
 	var fadeOutNormalUI = function(){
 		fadeOut($('#intro'));
-		fadeOut($('#guest_login'));
+		fadeOut($('#login'));
 		fadeOut($('#ws_connecting'));
 		fadeOut($('#board'));
 		fadeOut($('#guesser'));
@@ -95,8 +96,8 @@ $(document).ready(function(){
 	var me;
 	if(localStorage['me']){
 		me = JSON.parse(localStorage['me']);
-		$('#guest_login #name').val(me[1]);
-		$('#guest_login #name').focus();
+		$('#login #name').val(me[1]);
+		$('#login #name').focus();
 	};
 
 	if(sessionStorage['me']){
@@ -109,25 +110,25 @@ $(document).ready(function(){
 		});
 	}else{
 		setTimeout(function(){
-			fadeIn($('#guest_login'));
+			fadeIn($('#login'));
 			fadeIn($('#ws_connecting'));
 		}, 500);
 
 		var checkEnteredName = function(){
 			if(server.ready()){
-				if($('#guest_login #name').val().match(/^[a-zA-Z]{3,13}$/)){
-					$('#guest_login button').addClass('good')
+				if($('#login #name').val().match(/^[a-zA-Z]{3,13}$/)){
+					$('#login button').addClass('good')
 				}else{
-					$('#guest_login button').removeClass('good')
+					$('#login button').removeClass('good')
 					setTimeout(function(){
-						$('#guest_login #name').val(
-							$('#guest_login #name').val().replace(/[^a-zA-Z]/g, '')
+						$('#login #name').val(
+							$('#login #name').val().replace(/[^a-zA-Z]/g, '')
 						);
 						checkEnteredName();
 					}, 1000);
 				}
 			}else{
-				$('#guest_login button').removeClass('good')
+				$('#login button').removeClass('good')
 			}
 		}
 
@@ -136,12 +137,12 @@ $(document).ready(function(){
 			fadeOutAndRemove($("#ws_connecting"));
 			checkEnteredName();
 		});
-		$('#guest_login #name').on('keyup', checkEnteredName);
+		$('#login #name').on('keyup', checkEnteredName);
 
-		$('#guest_login').on('submit', function(event){
+		$('#login').on('submit', function(event){
 			event.preventDefault();
-			if($('#guest_login #name').val().match(/^[a-zA-Z]{3,13}$/)){
-				loginGuest($('#guest_login #name').val().replace(/[^a-zA-Z]/g, ''));
+			if($('#login #name').val().match(/^[a-zA-Z]{3,13}$/)){
+				loginGuest($('#login #name').val().replace(/[^a-zA-Z]/g, ''));
 			}
 		});
 
@@ -178,13 +179,16 @@ $(document).ready(function(){
 
 		localStorage['me'] = JSON.stringify(me);
 		sessionStorage['me'] = JSON.stringify(me);
-		$('#guest_login').remove();
+		$('#login').remove();
 		if(Modernizr.touch){
 			fadeOutAndRemove($('#title'));
 		}
 		fadeOutAndRemove($('#intro'), function(){
 			fadeIn($('#board'));
 			fadeIn($('#round'));
+			$('#chat_form').show();
+			$("#chat").nanoScroller({ scroll: 'bottom' });
+			$('#log_out').show();
 			fadeInWithoutHiding($('#chat'));
 			setTimeout(function(){
 				fadeIn($('#profile'));

@@ -47,10 +47,16 @@ var timestampToTimeDiv = function(timestamp){
 
 jQuery.fn.center = function (obj) {
   var loc = obj.offset();
-  this.css("top",(obj.outerHeight() - this.outerHeight()) / 2 + loc.top + 'px');
-  this.css("left",(obj.outerWidth() - this.outerWidth())  / 2 + loc.left+ 'px');
+  this.css("top",(obj.outerHeight() - this.outerHeight()) / 2 + loc.top - $('#container').offset().top + 'px');
+  this.css("left",(obj.outerWidth() - this.outerWidth())  / 2 + loc.left - $('#container').offset().left + 'px');
   return this;
 };
+
+var logOut = function(){
+	localStorage.clear();
+	sessionStorage.clear();
+	window.location=window.location;
+}
 
 
 var playerToColorMaps = {};
