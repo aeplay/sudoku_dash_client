@@ -28,19 +28,18 @@ body{
 	font-family: 'Maven Pro', sans;
 	font-size: 16px;
 	text-align: center;
-	
+	color: #111;
 }
 
-#container{
+.container{
 	position: relative;
-	min-height:100%;
-	min-height: 100%;
-	padding-top: 2em;
-	/* dependent on chat min-height and pos bottom! */
-	padding-bottom: 13.3em;
 	width: 21em;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#main.container{
+	padding-top: 2em;
 }
 
 h1{
@@ -65,6 +64,7 @@ b{
 em{
 	font-weight: 500;
 	font-style: normal;
+	color: #000;
 }
 
 a{
@@ -77,9 +77,17 @@ a:hover{
 }
 
 #title{
+	position: relative;
 	text-align: center;
 	margin-top: 1em;
 	margin-bottom: 2em;
+}
+
+#status{
+	position: absolute;
+	top: 11.5em;
+	left: 0;
+	right: 0;
 }
 
 #intro{
@@ -87,6 +95,7 @@ a:hover{
 	max-width: 18em;
 	margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 2em
 }
 
 .error{
@@ -94,13 +103,12 @@ a:hover{
 	cursor: text;
 }
 
-#login{
-	max-width: 10em;
-	margin-left: auto;
-	margin-right: auto;
+label{
+	display: block;
+	margin-bottom: 0.5em;
 }
 
-input, button{
+input[type=text], button, input[type=button], input[type=submit], textarea, select{
 	font-family: 'Maven Pro', sans;
 	font-size: 1em;
 	display: block;
@@ -108,10 +116,10 @@ input, button{
 	padding: 0.5em;
 	outline: none;
 	border-radius: 0.2em;
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 }
 
-input{
+input[type=text], textarea{
 	cursor: text;
 	border: 0.1em solid #aaa;
 
@@ -123,15 +131,19 @@ input{
 	user-select: text;
 }
 
-input:hover{
+select{
+	border: 0.1em solid #aaa;
+}
+
+input[type=text]:hover, textarea:hover, select:hover{
 	border: 0.1em solid #888;
 }
 
-input:focus{
+input[type=text]:focus, textarea:focus, select:focus{
 	border: 0.1em solid #555;
 }
 
-button{
+button, input[type=button], input[type=submit]{
 	background-color: #888;
 	color: #444;
 	border-radius: 0.2em;
@@ -141,7 +153,7 @@ button{
 	border-bottom: 0.1em solid #555;
 }
 
-button.good{
+button.good, input[type=button].good, input[type=submit].good{
 	cursor: pointer;
 	background-color: #5a5;
 	color: #050;
@@ -150,11 +162,11 @@ button.good{
 	border-bottom: 0.1em solid #383;
 }
 
-button.good:hover{
+button.good:hover, input[type=button].good:hover, input[type=submit].good:hover{
 	background-color: #5b5;
 }
 
-button.good:active{
+button.good:active, input[type=button].good:active, input[type=submit].good:active{
 	border: 0.1em solid #030;
 }
 
@@ -182,6 +194,82 @@ button.good:active{
 	color: #c43d99;
 }
 
+#vs{
+	margin-top: 1em;
+	color: #555;
+}
+
+#day_points, #night_points{
+	font-weight: bold;
+}
+
+#vs img{
+	position: relative;
+	vertical-align: top;
+	opacity: 0.65;
+	height: 1.2em;
+}
+
+#signup{
+	max-width: 10em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#choose_side{
+	background-color: #ddd;
+	border-radius: 0.2em;
+	margin-bottom: 1em;
+}
+
+#choose_side:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+#choose_side .side{
+	border: 0.1em solid transparent;
+	border-radius: 0.2em;
+	width: 5em;
+	padding: 0.5em 0.3em;
+	opacity: 0.5;
+	-webkit-transition: opacity 0.1s ease-in;
+	cursor: pointer;
+}
+
+#choose_side .side img{
+	height: 1.5em;
+	cursor: inherit;
+}
+
+#choose_side .side:hover{
+	border: 0.1em solid #aaa;
+	opacity: 0.7;
+}
+
+#choose_side .side.selected{
+	border: 0.1em solid #555;
+	opacity: 1;
+	cursor: default;
+}
+
+#choose_side #day{
+	float: left;
+}
+
+#choose_side #night{
+	float: right;
+}
+
+#existing_hint{
+	margin-top: 2em;
+	color: #888;
+}
+
 #board{
 	position: relative;
 	display: inline-block;
@@ -203,6 +291,7 @@ button.good:active{
 }
 
 #board .cell{
+	position: relative;
 	width: 1.8em;
 	min-width: 1.8em;
 	height: 1.8em;
@@ -230,8 +319,8 @@ button.good:active{
 #board .cell div{
 	width: 1.4em;
 	height: 1.4em;
+	margin-left: 0.2em;
 	line-height: 1.4em;
-	margin-left: 0.15em;
 	background-color: #fff;
 	border-radius: 0.2em;
 }
@@ -375,17 +464,35 @@ button.good:active{
 	cursor: not-allowed;
 }
 
-#chat{
-	position: absolute;
-	top: 33.5em;
-	bottom: 5em;
-	height: auto;
-	left: 50%;
-	width: 19.8em;
-	margin-left: -9.9em;
-	min-height: 8.3em;
-	text-align: left;
+#invite{
+	display: inline-block;
+	position: relative;
+	width: 18.3em;
+	z-index: 3;
+	
 }
+
+#invite_hint p{
+	font-size: 0.75em;
+	margin-bottom: 0.5em;
+}
+
+#invite_link{
+	background-color: #ddd;
+	margin-bottom: 0.2em;
+}
+
+#chat{
+	left: 50%;
+	width: 19.6em;
+	margin-left: -9.8em;
+	height: 8.3em;
+	text-align: left;
+	margin-bottom: 2em;
+}
+
+/* TODO make this dependent on actual vieport height
+   also hide the logo in css then not with modernizr */
 
 .touch #chat{
 	top: 24.5em;
@@ -401,9 +508,11 @@ button.good:active{
 #chat p{
 	position: relative;
 	padding-top: 0.2em;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	border-top: 0.1em solid #ddd;
+	margin-left: 0.2em;
+	padding-left: 0.3em;
+	margin-right: 0.2em;
+	padding-right: 0.3em;
+	border-top: 0.1em solid #d0d0d0;
 	margin-bottom: 0.3em;
 	color: #555;
 	overflow: hidden;
@@ -430,16 +539,16 @@ button.good:active{
 	z-index: 2;
 }
 
-#chat_form input{
-	border-color: #d8d8d8;
+#chat_form input[type=text]{
+	border-color: #d0d0d0;
 	margin: 0;
 }
 
-#chat_form input:hover{
+#chat_form input[type=text]:hover{
 	border-color: #bbb;
 }
 
-#chat_form input:focus{
+#chat_form input[type=text]:focus{
 	border-color: #aaa;
 }
 
@@ -461,13 +570,125 @@ button.good:active{
 	text-decoration: line-through;
 }
 
-#footer{
-	position: absolute;
-	bottom: 2em;
-	left: 0;
-	right: 0;
+#header{
+	overflow: visible;
+	background-color: #eee;
+	width: 100%;
+	height: 2.2em;
+	border-bottom: 0.1em solid #ccc;
+	text-align: center;
+	z-index: 3;
 }
 
-#footer a{
+#header section{
+	position: relative;
+	display: inline-block;
+	top: -0.1em;
+	border: 0.1em solid transparent;
+	width: 22.5em;
+	height: 2.2em;
+	overflow: hidden;
+	padding: 0 2em;
+	vertical-align: top;
+	text-align: left;
+	background-color: #eee;
+}
+
+#header section:hover{
+	height: auto;
+	overflow: visible;
+	border: 0.1em solid #ccc;
+	box-shadow: 0 0 2em #fff;
+	z-index: 10;
+}
+
+#header section h1{
+	font-weight: bold;
+	text-align: center;
+	padding: 0.6em 0 0.6em 0;
+	border-bottom: 0.1em solid #ccc;
+	margin: 0 0 1em 0;
+	color: #999;
+}
+
+#header section:hover h1{
+	color: #666;
+}
+
+#about:hover, #pay:hover{
+	padding-bottom: 0.25em;
+}
+
+#pay form{
+	margin-bottom: -0.5em;
+}
+
+#passwordless_login:hover{
+	padding-bottom: 1em;
+}
+
+.login_unsaved{
+	font-weight: bold;
+	color: #f55;
+}
+
+#login_link{
+	background-color: #ddd;
+}
+
+.copy_link{
+	display: inline-block;
+	width: 100%;
+	position: relative;
+	border-radius: 0.2em;
+	margin-bottom: 0.5em;
+}
+
+.copy_link input[type=text]{
+	background-color: transparent;
+	border: 0.1em solid transparent;
+	margin-bottom: 0;
+	font-size: 0.75em;
+	font-family: monospace;
+	color: #555;
+}
+
+.copy_link input[type=text]:hover{
+	color: #000;
+	border: 0.1em solid #aaa;
+}
+
+.copy_link .qr{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0.1em;
+	width: 1.65em;
 	padding: 0.3em;
+	z-index: 5;
+	opacity: 0.4;
+	background-repeat: no-repeat;
+	background-position:center;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA82lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjardA/SgNBHMXx70TULloE67mAgmu15eQPi2ARYopsqkxmBw1hd4fZn3/2Bh7B43iDFIIXUVJbqARLwU/1eM2DB+rZDPujzjGUlcRsYvJZPteHGw7YAwDrmmDG4yuAqq48vynYvqEAXk/NsD/ib/ZdiAK8AEnhGwd8AKsHCQJqAfSW6yCgBOitp5MBqCegK/5RAAZ1aOPq5lb0eZqm2hT10uvrthFfNvqycnUMdbTiC+B7A+Aoi7bVmS1Lq5OzhH83y+f6K71PUYA62ey6HXcX73/+7FzAJ0sbODDOTdGSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACSSURBVHjajFJBDoAwDIJl//8yHkils8Y441y7plCQwp+1AbZKkaq3Z7c/Dqmcz+x+FvTSnNfkkX4Ht/PKrBwnu6t5rdA/swOAeoEVIMi7HyGx4GiFgwiI3t1RLDgKT0G7tF2awazY+VJ8MStzFvwtSG8d6O7yMMu0g+Cua6qWeSP2Cqc+ZwS5R/gyqxzmv7/3GgBmznwae3LXHQAAAABJRU5ErkJggg==);
+	cursor: none;
+}
+
+.copy_link .qr:hover{
+	opacity: 1;
+}
+
+.copy_link .qr img{
+	display: none;
+	position: absolute;
+	bottom: -1.4em;
+	left: -1.4em;
+	padding: 0.3em;
+	background-color: #fff;
+	border-radius: 0.2em;
+	border: 0.1em solid #aaa;
+	cursor: none;
+}
+
+.copy_link .qr:hover img{
+	display: block;
 }
