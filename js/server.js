@@ -17,18 +17,22 @@ window.Server = function(ui){
 
 	ui.progress.attemptWebSocket();
 
-	var websocket = new WebSocket('ws://'+host+'/websocket');
+	var bullet = $.bullet('ws://'+host+'/websocket');
 
 	ui.progress.connectingTo(host);
 
-	websocket.onclose = function(event){
+	bullet.onclose = function(event){
 		ui.progress.connectionError(event.code);
 	};
 
 	var serverListeners = {};
 	var timeoutsForEvents = {};
 
-	websocket.onmessage = function(event){
+	bullet.onheartbeat = function(){
+        bullet.send('ping');
+    }
+
+	bullet.onmessage = function(event){
 		message = JSON.parse(event.data);
 		type = message.shift();
 		console.log('in %o: %o', type, message);
@@ -55,7 +59,7 @@ window.Server = function(ui){
 
 
 	var server = {
-		send: function(data){console.log('out %o', data);websocket.send(JSON.stringify(data))},
+		send: function(data){console.log('out %o', data);bullet.send(JSON.stringify(data))},
 		on: function(type, callback){
 			if(!serverListeners[type]) serverListeners[type] = [];
 			serverListeners[type].push(callback);
@@ -75,7 +79,7 @@ window.Server = function(ui){
 				timeoutsForEvents[eventType].push(timeout);
 			});
 		},
-		ready: function(){return websocket.readyState === 1},
+		ready: function(){return bullet.readyState === 1},
 		retryWithNextPort: function(){
 			localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 			ui.progress.retryingWithAnotherPort();
@@ -83,7 +87,7 @@ window.Server = function(ui){
 			server.ignoreDisconnect();
 		},
 		ignoreDisconnect: function(){
-			websocket.onclose = function(){};
+			bullet.onclose = function(){};
 		}
 	};
 
