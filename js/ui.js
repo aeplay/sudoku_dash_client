@@ -264,20 +264,6 @@ window.Ui = function(){
 
 		},
 
-		pay: {
-
-			show: function(){
-				fadeIn($("#pay"));
-			}
-
-		},
-
-		sideScores: {
-			show: function(){
-				fadeIn($("#vs"));
-			}
-		},
-
 		inviteLink: {
 
 			show: function(inviteUrl, qrInviteUrl){
@@ -293,6 +279,11 @@ window.Ui = function(){
 			show: function(){
 				$("#chat_form").show();
 				fadeInWithoutHiding($("#chat"));
+			},
+
+			hide: function(){
+				$("#chat_form").hide();
+				fadeOut($("#chat"));
 			},
 
 			registerPostHandler: function(handlerF){
@@ -312,7 +303,7 @@ window.Ui = function(){
 				var last = $('.last_chat_message');
 				last.removeClass('last_chat_message');
 				last.after(
-					'<p class="last_chat_message">'+
+					'<p class="last_chat_message message">'+
 					timestampToTimeDiv(timestamp)+
 					item+
 					'</p>'
@@ -320,8 +311,13 @@ window.Ui = function(){
 				$("#chat").nanoScroller({ scroll: 'bottom' });
 			},
 
+			empty: function(){
+				$("#chat .message").remove();
+				$("#chat .beginning").addClass('last_chat_message');
+			},
+
 			appendPlayerMessage: function(player, message, timestamp){
-				var name = player[0];
+				var name = player;
 				// escape magic
 				var text = ': ' + $('<div/>').text(message).html();
 				ui.chat.append('<span class="'+colorize(player)+'">'+name+'</span>'+text, timestamp);
@@ -343,8 +339,18 @@ window.Ui = function(){
 				fadeIn($("#board"));
 			},
 
+			hide: function(){
+				fadeOut($("#board"));
+			},
+
 			initializeCell: function(num, pos){
-				if(num !== 0){
+				$('#board_'+pos).removeClass('solved');
+				$('#board_'+pos).removeClass('given');
+				$('#board_'+pos).removeClass('pending');
+				if(num === 0){
+					$('#board_'+pos+' div').html("");
+					$('#board_'+pos).addClass('empty');
+				}else{
 					$('#board_'+pos+' div').html(num);
 					$('#board_'+pos).removeClass('empty');
 					$('#board_'+pos).addClass('given');
@@ -367,6 +373,10 @@ window.Ui = function(){
 
 			setCellNotPending: function(pos){
 				$('#board_'+pos).removeClass('pending');
+			},
+
+			complete: function(){
+				return $('#board .empty').length === 0;
 			},
 
 			flashCellGood: function(pos){
@@ -475,6 +485,10 @@ window.Ui = function(){
 		onlinePlayers: {
 			show: function(){
 				fadeIn($("#round"));
+			},
+
+			hide: function(){
+				fadeOut($("#round"));
 			},
 
 			update: function(onlinePlayers){

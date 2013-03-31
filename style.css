@@ -83,6 +83,10 @@ a:hover{
 	margin-bottom: 2em;
 }
 
+#title svg{
+	margin-bottom: 1em;
+}
+
 #status{
 	position: absolute;
 	top: 11.5em;

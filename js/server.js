@@ -1,5 +1,8 @@
 window.Server = function(ui){
 
+	// generate unique client id
+	var clientId = window.generateID();
+
 	// WEBSOCKET
 	var host;
 	var ports = [80, 2739];
@@ -17,9 +20,13 @@ window.Server = function(ui){
 
 	ui.progress.attemptWebSocket();
 
-	var bullet = $.bullet('ws://'+host+'/websocket');
+	var bullet = $.bullet('ws://'+host+'/realtime');
 
 	ui.progress.connectingTo(host);
+
+	bullet.onopen = function(){
+		server.send(["hello"]);
+	}
 
 	bullet.onclose = function(event){
 		ui.progress.connectionError(event.code);
@@ -33,21 +40,27 @@ window.Server = function(ui){
     }
 
 	bullet.onmessage = function(event){
-		message = JSON.parse(event.data);
-		type = message.shift();
-		console.log('in %o: %o', type, message);
-		if(serverListeners[type]){
-			serverListeners[type].forEach(function(listener){
-				listener(message);
-			});
+		console.log('in raw: %o', event.data);
+		if(event.data !== "pong"){
+			data = JSON.parse(event.data);
+			for(var i = 0; i < data[1].length; i++){
+				message = data[1][i];
+				type = message.shift();
+				console.log('in %o: %o', type, message);
+				if(serverListeners[type]){
+					serverListeners[type].forEach(function(listener){
+						listener(message);
+					});
+				}
+				if(timeoutsForEvents[type]){
+					timeoutsForEvents[type].forEach(function(timeout){
+						console.log('Cleared timeout for: '+type);
+						clearTimeout(timeout);
+						timeoutsForEvents[type].splice(timeoutsForEvents[type].indexOf(timeout), 1);
+					});
+				}
+			}
 		}
-		if(timeoutsForEvents[type]){
-			timeoutsForEvents[type].forEach(function(timeout){
-				console.log('Cleared timeout for: '+type);
-				clearTimeout(timeout);
-				timeoutsForEvents[type].splice(timeoutsForEvents[type].indexOf(timeout), 1);
-			});
-		}	
 	};
 
 	/* TODO: CONNECTION ALGORITHM 
@@ -59,7 +72,11 @@ window.Server = function(ui){
 
 
 	var server = {
-		send: function(data){console.log('out %o', data);bullet.send(JSON.stringify(data))},
+		send: function(data){
+			data.push(clientId);
+			console.log('out %o', data);
+			bullet.send(JSON.stringify(data))
+		},
 		on: function(type, callback){
 			if(!serverListeners[type]) serverListeners[type] = [];
 			serverListeners[type].push(callback);
@@ -91,7 +108,7 @@ window.Server = function(ui){
 		}
 	};
 
-	server.timeoutEvents(server.retryWithNextPort, ['hello'], 3000);
+	server.timeoutEvents(server.retryWithNextPort, ['hello'], 30000);
 
 	server.on('hello', function(){
 		ui.progress.connected(host);

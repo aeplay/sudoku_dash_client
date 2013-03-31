@@ -26,23 +26,16 @@ window.Authenticate = function(ui, server, authenticatedCallback){
 			}
 		}
 
-		var generateID = function(){
-			return 'xxxxxxxx'.replace(/[x]/g, function(c) {
-				var r = Math.random()*36|0, v = c == 'x' ? r : (r&0x3|0x8);
-				return v.toString(36);
-			});
-		};
-
 		var generatePlayerAndLogin = function(name){
 			me = {
 				name: name,
-				id: generateID(),
-				secret: generateID()
+				id: window.generateID(),
+				secret: window.generateID()
 			};
-			server.send(['signup', me]);
+			server.send(['register', me]);
 			ui.progress.signingUp(me.name);
-			server.timeoutEvents(server.retryWithNextPort, ['signup_ok', 'signup_invalid'], 3000);
-			server.on('signup_ok', function(){
+			server.timeoutEvents(server.retryWithNextPort, ['register_ok', 'register_invalid'], 3000);
+			server.on('register_ok', function(){
 				login();
 			});
 		};

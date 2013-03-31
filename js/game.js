@@ -1,4 +1,4 @@
-window.Game = function(ui, server, me){
+window.Game = function(ui, server, me, restartCallback){
 
 	// CHAT (OUTGOING)
 
@@ -8,65 +8,78 @@ window.Game = function(ui, server, me){
 
 	// HISTORY UPDATES
 
-	server.once('history_update', function(){
-		ui.progress.playing();
-		ui.board.show();
-		ui.onlinePlayers.show();
-		ui.chat.show();
-	});
-
 	var onlinePlayers = {};
-	var lastHistoryIndex = 0;
+	var firstGameEvent = true;
 
-	server.on('history_update', function(historyContainer){
-		var history = historyContainer[0].reverse();
-		history = history.slice(lastHistoryIndex);
-		history.forEach(function(event){
-			lastHistoryIndex ++;
+	server.on('game_event', function(data){
+		var game = data[0];
+		var timestamp = data[1]
+		var eventType = data[2];
+		var eventData = data[3];
 
-			if(event[0] === 'start'){
-				var timestamp = event[1];
-				var board = event[2];
-				board.forEach(ui.board.initializeCell);
-				ui.chat.gameStarted(timestamp);
+		if(firstGameEvent){
+			ui.progress.playing();
+			ui.board.show();
+			ui.onlinePlayers.show();
+			ui.chat.show();
+			firstGameEvent = false;
+		}
 
-			}else if(event[0] === 'joined'){
-				var player = event[2][0];
-				onlinePlayers[player] = true;
+		console.log("game event: %o", eventType);
 
-			}else if(event[0] === 'left'){
-				var player = event[2][0];
-				onlinePlayers[player] = false;
+		if(eventType === 'start'){
+			var board = eventData[1];
+			board.forEach(ui.board.initializeCell);
+			ui.chat.gameStarted(timestamp);
 
-			}else if(event[0] === 'chat'){
-				var timestamp = event[1];
-				var player = event[2][0];
-				var message = event[3];
-				ui.chat.appendPlayerMessage(player, message, timestamp);
+		}else if(eventType === 'join'){
+			var player = eventData[0];
+			onlinePlayers[player] = true;
 
-			}else if(event[0] === 'guess'){
-				var result = event[5][0];
-				var player = event[4][0];
+		}else if(eventType === 'leave'){
+			var player = eventData[0];
+			onlinePlayers[player] = false;
 
-				if(result === 'good'){
-					var pos = event[2];
-					var num = event[3];
-					
-					ui.board.setCellSolved(pos, num, player);
+		}else if(eventType === 'chat'){
+			var player = eventData[0];
+			var message = eventData[1];
+			ui.chat.appendPlayerMessage(player, message, timestamp);
 
-					if(guessPos === pos){
-						ui.guessing.stop();
-					}
+		}else if(eventType === 'guess'){
+			var player = eventData[0];
+			var result = eventData[3];
+
+			if(result[0] === 'good'){
+				var pos = eventData[1];
+				var num = eventData[2];
+				
+				ui.board.setCellSolved(pos, num, player);
+				if(ui.board.complete()){
+					ui.chat.gameComplete(timestamp);
+					setTimeout(function(){
+						server.send(['leave', 'complete']);
+					}, 9000);
 				}
 
-			}else if(event[0] === 'complete'){
-				var timestamp = event[1];
-				ui.chat.gameComplete(timestamp);
-
+				if(guessPos === pos){
+					ui.guessing.stop();
+				}
 			}
-		});
+
+		}
 
 		ui.onlinePlayers.update(onlinePlayers);
+	});
+
+	server.on('player_event', function(data){
+		if(data[0] === "leave" && data[1] === "complete"){
+			firstGameEvent = true;
+			ui.onlinePlayers.hide();
+			ui.chat.empty();
+			ui.chat.hide();
+			ui.board.hide();
+			setTimeout(restartCallback, 1000);
+		}
 	});
 
 	// GUESSING
@@ -90,27 +103,38 @@ window.Game = function(ui, server, me){
 		ui.board.setCellPending(guessPos);
 	}, function(){return guessPos});
 
-	server.on('guess_result', function(resultArray){
-		var result = resultArray[0][0];
-		var resultPos = pendingGuesses.shift();
+	server.on('game_event', function(data){
+		var eventType = data[2];
+		var eventData = data[3];
+		if(eventType === 'guess'){
+			var player = eventData[0];
+			if(player === me.id){
+				var pos = eventData[1];
+				var index = pendingGuesses.indexOf(pos);
+				if(index !== -1){
+					pendingGuesses.splice(index, 1);
+					var result = eventData[3];
 
-		ui.board.setCellNotPending(resultPos);
+					ui.board.setCellNotPending(pos);
 
+					if(result[0] === 'good'){
+						ui.board.flashCellGood(pos);
+						console.log("good")
+					}else if(result[0] === 'bad'){
+						var conflicts = result[1];
+						ui.board.flashConflicts(conflicts);
+						ui.board.tilt();
+						
+					}else if(result[0] === 'ambigous'){
+						ui.board.flashCellAmbigous(pos);
+						ui.board.tilt();
 
-		if(result === 'good'){
-			ui.board.flashCellGood(resultPos);
-
-		}else if(result === 'bad'){
-			var conflicts = resultArray[0][1];
-			ui.board.flashConflicts(conflicts);
-			ui.board.tilt();
-			
-		}else if(result === 'ambigous'){
-			ui.board.flashCellAmbigous(resultPos);
-			ui.board.tilt();
-
-		}else if(result === 'already_filled'){
-			ui.board.flashCellAlreadyFilled(resultPos);
+					}else if(result[0] === 'already_filled'){
+						ui.board.flashCellAlreadyFilled(pos);
+					}
+				}
+				
+			}
 		}
 	});
 

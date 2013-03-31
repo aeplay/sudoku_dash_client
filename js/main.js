@@ -24,14 +24,14 @@ $(document).ready(function(){
 		var inviteUrl = "http://sudokudash.com/?join="+me.id;
 		var qrInviteUrl = "http://sudokudash.com/?qrjoin="+me.id;
 		ui.inviteLink.show(inviteUrl, qrInviteUrl);
+		
+		var game = window.Game(ui, server, me, findGame);
+		findGame();
+	}
 
-		ui.sideScores.show();
-
-		ui.pay.show();
-
+	var findGame = function(){
 		ui.progress.findingGame();
 		server.send(['find_game', []]);
-		var game = window.Game(ui, server, me);
 	}
 
 });
