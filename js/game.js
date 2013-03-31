@@ -34,16 +34,22 @@ window.Game = function(ui, server, me, restartCallback){
 
 		}else if(eventType === 'join'){
 			var player = eventData[0];
-			onlinePlayers[player] = true;
+			var playerInfo = eventData[1];
+			onlinePlayers[player] = {
+				name: playerInfo[1],
+				points: playerInfo[2],
+				badges: playerInfo[3],
+				online: true
+			};
 
 		}else if(eventType === 'leave'){
 			var player = eventData[0];
-			onlinePlayers[player] = false;
+			onlinePlayers[player] && (onlinePlayers[player].online = false);
 
 		}else if(eventType === 'chat'){
 			var player = eventData[0];
 			var message = eventData[1];
-			ui.chat.appendPlayerMessage(player, message, timestamp);
+			ui.chat.appendPlayerMessage(player, message, timestamp, onlinePlayers);
 
 		}else if(eventType === 'guess'){
 			var player = eventData[0];
@@ -52,8 +58,10 @@ window.Game = function(ui, server, me, restartCallback){
 			if(result[0] === 'good'){
 				var pos = eventData[1];
 				var num = eventData[2];
+
+				onlinePlayers[player].points++;
 				
-				ui.board.setCellSolved(pos, num, player);
+				ui.board.setCellSolved(pos, num, player, onlinePlayers);
 				if(ui.board.complete()){
 					ui.chat.gameComplete(timestamp);
 					setTimeout(function(){
@@ -64,6 +72,8 @@ window.Game = function(ui, server, me, restartCallback){
 				if(guessPos === pos){
 					ui.guessing.stop();
 				}
+			}else if(result[0] === 'bad'){
+				onlinePlayers[player].points--;
 			}
 
 		}

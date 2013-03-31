@@ -108,7 +108,7 @@ window.Server = function(ui){
 		}
 	};
 
-	server.timeoutEvents(server.retryWithNextPort, ['hello'], 30000);
+	server.timeoutEvents(server.retryWithNextPort, ['hello'], 5000);
 
 	server.on('hello', function(){
 		ui.progress.connected(host);

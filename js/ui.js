@@ -52,6 +52,8 @@ window.Ui = function(){
 		$('#invite').remove();
 		$('#chat').remove();
 		$('#log_out').remove();
+		$('#login_link').remove();
+		$('#login_link_descr').remove();
 	};
 
 	var fadeOutNormalUI = function(){
@@ -63,6 +65,8 @@ window.Ui = function(){
 		fadeOut($('#round'));
 		fadeOut($('#profile'));
 		fadeOut($('#chat'));
+		fadeOut($('#login_link'));
+		fadeOut($('#login_link_descr'));
 	};
 
 	jQuery.fn.center = function (obj) {
@@ -73,12 +77,20 @@ window.Ui = function(){
 	};
 
 	var timestampToDate = function(timestamp){
-		return moment(new Date(timestamp[0]*1000000*1000 + timestamp[1]*1000));
+		if(timestamp){
+			return moment(new Date(timestamp[0]*1000000*1000 + timestamp[1]*1000));
+		}else{
+			return ""
+		}
 	}
 
 	var timestampToTimeDiv = function(timestamp){
-		var date = timestampToDate(timestamp);
-		return '<span class="time" title="'+date.format('LLLL')+'">'+date.format('H:mm:ss')+'</span>';
+		if(timestamp){
+			var date = timestampToDate(timestamp);
+			return '<span class="time" title="'+date.format('LLLL')+'">'+date.format('H:mm:ss')+'</span>';
+		}else{
+			return '<span class="time""></span>';
+		}
 	};
 
 	var playerToColorMaps = {};
@@ -243,7 +255,7 @@ window.Ui = function(){
 			},
 
 			otherClientConnected: function(){
-				changeStatus("You connected on another device. If you want to play here instead, please reload.", false, true, true);
+				changeStatus("You connected from somewhere else. If you want to play here instead, please reload.", false, true, true);
 			}
 		},
 
@@ -258,8 +270,8 @@ window.Ui = function(){
 				mailtoUrl += encodeURIComponent("Note to self, use this link to play sudoku dash as "+playerName+":\n\n"+loginUrl);
 				$("#login_link_email").attr('href', mailtoUrl);
 
-				$("#passwordless_login .me").html(playerName);
-				fadeIn($("#passwordless_login"));
+				fadeIn($("#login_link"));
+				fadeIn($("#login_link_descr"));
 			}
 
 		},
@@ -292,6 +304,7 @@ window.Ui = function(){
 					handlerF($('#chat_form #message').val());
 					$('#chat_form #message').val('');
 					$('#chat_form #message').attr('disabled', 'disabled');
+					$('#chat_form #message').attr('placeholder', 'Say something...');
 					setTimeout(function(){
 						$('#chat_form #message').removeAttr('disabled');
 					}, 200);
@@ -316,8 +329,8 @@ window.Ui = function(){
 				$("#chat .beginning").addClass('last_chat_message');
 			},
 
-			appendPlayerMessage: function(player, message, timestamp){
-				var name = player;
+			appendPlayerMessage: function(player, message, timestamp, playerInfo){
+				var name = playerInfo[player].name;
 				// escape magic
 				var text = ': ' + $('<div/>').text(message).html();
 				ui.chat.append('<span class="'+colorize(player)+'">'+name+'</span>'+text, timestamp);
@@ -325,10 +338,13 @@ window.Ui = function(){
 
 			gameStarted: function(timestamp){
 				ui.chat.append('Game started.', timestamp);
+				$('#chat_form #message').attr('placeholder', 'Say hello!');
 			},
 
 			gameComplete: function(timestamp){
-				ui.chat.append('Game complete.', timestamp);
+				ui.chat.append('Game complete!', timestamp);
+				$('#chat_form #message').attr('placeholder', 'Party hard!');
+				setTimeout(function(){ui.chat.append('Closing...', null);}, 7000);
 			}
 
 		},
@@ -357,14 +373,14 @@ window.Ui = function(){
 				}
 			},
 
-			setCellSolved: function(pos, num, player){
+			setCellSolved: function(pos, num, player, playerInfos){
 				var name = player[0];
 				var boardCell = $('#board_'+pos);
 				boardCell.children('div').html(num);
 				boardCell.removeClass('empty');
 				boardCell.addClass('solved');
 				boardCell.addClass(colorize(player));
-				boardCell.attr('title', name);
+				boardCell.attr('title', playerInfos[player].name);
 			},
 
 			setCellPending: function(pos){
@@ -493,11 +509,19 @@ window.Ui = function(){
 
 			update: function(onlinePlayers){
 				$('#round').html('');
-				Object.keys(onlinePlayers).forEach(function(player){
-					player = player.split(',');
-					var name = player[0];
-					var el = $('<span class="player '+colorize(player)+'">'+name+'</span>');
-					if(!onlinePlayers[player]){
+				Object.keys(onlinePlayers).forEach(function(id){
+					var player = onlinePlayers[id];
+					var el = $(
+						'<span class="player '
+						+colorize(id)
+						+'">'
+						+player.name
+						+' '
+						+player.points
+						+'<span class="badges">'
+						+player.badges.map(function(badge){return '<span title="'+badge[1]+'">'+badge[0]+'</span>'}).join(' ')
+						+'</span></span>');
+					if(!player.online){
 						el.addClass('offline');
 						el.attr('title', 'offline');
 					}

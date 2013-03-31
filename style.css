@@ -87,6 +87,10 @@ a:hover{
 	margin-bottom: 1em;
 }
 
+#alpha, #alpha a{
+	color: #aaa;
+}
+
 #status{
 	position: absolute;
 	top: 11.5em;
@@ -570,6 +574,12 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	margin: 0.25em 0.5em;
 }
 
+#round .player .badges{
+	font-size: 0.6em;
+	line-height: 1;
+	vertical-align: middle;
+}
+
 #round .player.offline{
 	text-decoration: line-through;
 }
@@ -637,7 +647,14 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 }
 
 #login_link{
-	background-color: #ddd;
+	background-color: #f8f8f8;
+	width: 18.5em;
+}
+
+#login_link_descr{
+	margin-top: 3em;
+	font-size: 0.75em;
+	color: #888;
 }
 
 .copy_link{
@@ -654,7 +671,7 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	margin-bottom: 0;
 	font-size: 0.75em;
 	font-family: monospace;
-	color: #555;
+	color: #888;
 }
 
 .copy_link input[type=text]:hover{
