@@ -2,6 +2,19 @@
 <html>
 	<head>
 		<title>sudoku dash</title>
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="description" content="A collaborative multiplayer version of sudoku that you can play in your browser."/>
+		<meta name="keywords" content="game sudoku multiplayer realtime collaborative brwoser HTML5 websockets" />
+		<meta name="author" content="Anselm Eickhoff, anselm.eickhoff@gmail.com">
+
+		<meta property="og:title" content="sudoku dash"/>
+		<meta property="og:description" content="A collaborative multiplayer version of sudoku that you can play in your browser."/>
+		<meta property="og:url" content="http://sudokudash.com"/>
+		<meta property="og:site_name" content="ae output"/>
+		<meta property="og:type" content="game"/>
+		<meta property="og:image" content="http://sudokudash.com/imgs/logo.png"/>
+
 		<link href="http://fonts.googleapis.com/css?family=Julee|Maven+Pro:400,700" rel="stylesheet">
 		<link href="style.css" rel="stylesheet">
 		<link href="nanoscroller.css" rel="stylesheet">
@@ -89,4 +102,17 @@
 	<script src="js/authenticate.js"></script>
 	<script src="js/game.js"></script>
 	<script src="js/main.js"></script>
+
+	<!-- Piwik --> 
+	<script type="text/javascript">
+	var pkBaseURL = (("https:" == document.location.protocol) ? "https://aeoutput.com/piwik/" : "http://aeoutput.com/piwik/");
+	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+	</script><script type="text/javascript">
+	try {
+	var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 6);
+	piwikTracker.trackPageView();
+	piwikTracker.enableLinkTracking();
+	} catch( err ) {}
+	</script><noscript><p><img src="http://aeoutput.com/piwik/piwik.php?idsite=6" style="border:0" alt="" /></p></noscript>
+	<!-- End Piwik Tracking Code -->
 </html>

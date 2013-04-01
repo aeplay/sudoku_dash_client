@@ -7,7 +7,7 @@ window.Server = function(ui){
 	var host;
 	var ports = [2739, 80];
 
-	if(window.location.protocol === 'file:'){
+	if(localStorage['local']){
 		host = 'localhost:2739';
 	}else{
 		host = '79.125.111.247';

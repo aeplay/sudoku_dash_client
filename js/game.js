@@ -41,7 +41,8 @@ window.Game = function(ui, server, me, restartCallback){
 				name: playerInfo[1],
 				points: playerInfo[2],
 				badges: playerInfo[3],
-				online: true
+				online: true,
+				show: player === me.id
 			};
 
 		}else if(eventType === 'leave'){
@@ -62,6 +63,7 @@ window.Game = function(ui, server, me, restartCallback){
 				var num = eventData[2];
 
 				onlinePlayers[player].points++;
+				onlinePlayers[player].show = true;
 				
 				ui.board.setCellSolved(pos, num, player, onlinePlayers);
 				if(ui.board.complete()){

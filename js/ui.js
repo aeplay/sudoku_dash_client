@@ -516,21 +516,23 @@ window.Ui = function(){
 				$('#round').html('');
 				Object.keys(onlinePlayers).forEach(function(id){
 					var player = onlinePlayers[id];
-					var el = $(
-						'<span class="player '
-						+colorize(id)
-						+'">'
-						+player.name
-						+' '
-						+player.points
-						+'<span class="badges">'
-						+player.badges.map(function(badge){return '<span title="'+badge[1]+'">'+badge[0]+'</span>'}).reverse().join('')
-						+'</span></span>');
-					if(!player.online){
-						el.addClass('offline');
-						el.attr('title', 'offline');
+					if(player.show){
+						var el = $(
+							'<span class="player '
+							+colorize(id)
+							+'">'
+							+player.name
+							+' '
+							+player.points
+							+'<span class="badges">'
+							+player.badges.map(function(badge){return '<span title="'+badge[1]+'">'+badge[0]+'</span>'}).reverse().join('')
+							+'</span></span>');
+						if(!player.online){
+							el.addClass('offline');
+							el.attr('title', 'offline');
+						}
+						el.appendTo('#round');
 					}
-					el.appendTo('#round');
 				});
 			}
 
