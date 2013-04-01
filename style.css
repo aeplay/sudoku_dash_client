@@ -31,6 +31,13 @@ body{
 	color: #111;
 }
 
+body { -webkit-animation: bugfix infinite 1s; }
+
+@-webkit-keyframes bugfix { 
+  from { padding: 0; } 
+  to { padding: 0; } 
+}
+
 .container{
 	position: relative;
 	width: 21em;
@@ -419,17 +426,17 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	table-layout: fixed;
 	background-color: #eee;
 	-webkit-transition: opacity 0.15s ease-in;
+	opacity: 1;
+}
+
+#guesser_background:hover ~ #main #guesser table{
+	-webkit-transition: opacity 0s ease-in;
 	opacity: 0.3;
 }
 
 .touch #guesser table{
 	opacity: 1;
 	-webkit-transition: none;
-}
-
-#guesser:hover table{
-	-webkit-transition: opacity 0s ease-in;
-	opacity: 1;
 }
 
 #guesser table td{
