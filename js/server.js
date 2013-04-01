@@ -10,7 +10,7 @@ window.Server = function(ui){
 	if(localStorage['local']){
 		host = 'localhost:2739';
 	}else{
-		host = '79.125.111.247';
+		host = 'darwin.sudokudash.com';
 		if(!localStorage['portN']){
 			localStorage['portN'] = 0;
 		}
