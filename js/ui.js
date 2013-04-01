@@ -516,10 +516,10 @@ window.Ui = function(){
 				$('#round').html('');
 				Object.keys(onlinePlayers).forEach(function(id){
 					var player = onlinePlayers[id];
-					if(player.show){
+					if(player.show || player.online){
 						var el = $(
 							'<span class="player '
-							+colorize(id)
+							+(player.show ? colorize(id) : '')
 							+'">'
 							+player.name
 							+' '
