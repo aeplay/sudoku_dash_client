@@ -10,7 +10,7 @@
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
-	-moz-user-select: none;
+	-moz-user-select: -moz-none;
 	-ms-user-select: none;
 	user-select: none;
 
@@ -137,7 +137,9 @@ input[type=text], button, input[type=button], input[type=submit], textarea, sele
 input[type=text], textarea{
 	cursor: text;
 	border: 0.1em solid #aaa;
+}
 
+input[type=text], textarea, input[type=text] *, textarea *{
 	-webkit-touch-callout: text;
 	-webkit-user-select: text;
 	-khtml-user-select: text;
