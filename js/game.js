@@ -18,6 +18,8 @@ window.Game = function(ui, server, me, restartCallback){
 		var eventData = data[3];
 
 		if(firstGameEvent){
+			onlinePlayers = {};
+			ui.resetColors();
 			ui.progress.playing();
 			ui.board.show();
 			ui.onlinePlayers.show();

@@ -287,6 +287,10 @@ window.Ui = function(){
 
 		},
 
+		resetColors: function(){
+			playerToColorMaps = {};
+		},
+
 		chat: {
 			show: function(){
 				$("#chat_form").show();
@@ -360,6 +364,7 @@ window.Ui = function(){
 			},
 
 			initializeCell: function(num, pos){
+				$('#board_'+pos).removeAttr('title');
 				$('#board_'+pos).removeClass('solved');
 				$('#board_'+pos).removeClass('given');
 				$('#board_'+pos).removeClass('pending');
@@ -519,7 +524,7 @@ window.Ui = function(){
 						+' '
 						+player.points
 						+'<span class="badges">'
-						+player.badges.map(function(badge){return '<span title="'+badge[1]+'">'+badge[0]+'</span>'}).join(' ')
+						+player.badges.map(function(badge){return '<span title="'+badge[1]+'">'+badge[0]+'</span>'}).reverse().join('')
 						+'</span></span>');
 					if(!player.online){
 						el.addClass('offline');

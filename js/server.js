@@ -5,12 +5,12 @@ window.Server = function(ui){
 
 	// WEBSOCKET
 	var host;
-	var ports = [80, 2739];
+	var ports = [2739, 80];
 
 	if(window.location.protocol === 'file:'){
 		host = 'localhost:2739';
 	}else{
-		host = 'darwin.sudokudash.com';
+		host = '79.125.111.247';
 		if(!localStorage['portN']){
 			localStorage['portN'] = 0;
 		}
