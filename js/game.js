@@ -42,7 +42,7 @@ window.Game = function(ui, server, me, restartCallback){
 				points: playerInfo[2],
 				badges: playerInfo[3],
 				online: true,
-				show: player === me.id
+				show: (onlinePlayers[player] && onlinePlayers[player].show) || player === me.id
 			};
 
 		}else if(eventType === 'leave'){
