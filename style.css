@@ -139,13 +139,14 @@ input[type=text], textarea{
 	border: 0.1em solid #aaa;
 }
 
-input[type=text], textarea, input[type=text] *, textarea *{
+input[type=text], textarea, input[type=text] *, textarea *, #chat p{
 	-webkit-touch-callout: text;
 	-webkit-user-select: text;
 	-khtml-user-select: text;
 	-moz-user-select: text;
 	-ms-user-select: text;
 	user-select: text;
+	cursor: text;
 }
 
 select{
@@ -211,75 +212,10 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	color: #c43d99;
 }
 
-#vs{
-	margin-top: 1em;
-	color: #555;
-}
-
-#day_points, #night_points{
-	font-weight: bold;
-}
-
-#vs img{
-	position: relative;
-	vertical-align: top;
-	opacity: 0.65;
-	height: 1.2em;
-}
-
 #signup{
 	max-width: 10em;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-#choose_side{
-	background-color: #ddd;
-	border-radius: 0.2em;
-	margin-bottom: 1em;
-}
-
-#choose_side:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
-}
-
-#choose_side .side{
-	border: 0.1em solid transparent;
-	border-radius: 0.2em;
-	width: 5em;
-	padding: 0.5em 0.3em;
-	opacity: 0.5;
-	-webkit-transition: opacity 0.1s ease-in;
-	cursor: pointer;
-}
-
-#choose_side .side img{
-	height: 1.5em;
-	cursor: inherit;
-}
-
-#choose_side .side:hover{
-	border: 0.1em solid #aaa;
-	opacity: 0.7;
-}
-
-#choose_side .side.selected{
-	border: 0.1em solid #555;
-	opacity: 1;
-	cursor: default;
-}
-
-#choose_side #day{
-	float: left;
-}
-
-#choose_side #night{
-	float: right;
 }
 
 #existing_hint{
@@ -486,7 +422,6 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	position: relative;
 	width: 18.3em;
 	z-index: 3;
-	
 }
 
 #invite_hint p{
@@ -506,13 +441,6 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	height: 8.3em;
 	text-align: left;
 	margin-bottom: 2em;
-}
-
-/* TODO make this dependent on actual vieport height
-   also hide the logo in css then not with modernizr */
-
-.touch #chat{
-	top: 24.5em;
 }
 
 #chat .content{
@@ -590,70 +518,12 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	vertical-align: middle;
 }
 
-#round .player.offline{
-	text-decoration: line-through;
+#round .player.offline:before{
+	content: '(';
 }
 
-#header{
-	overflow: visible;
-	background-color: #eee;
-	width: 100%;
-	height: 2.2em;
-	border-bottom: 0.1em solid #ccc;
-	text-align: center;
-	z-index: 3;
-}
-
-#header section{
-	position: relative;
-	display: inline-block;
-	top: -0.1em;
-	border: 0.1em solid transparent;
-	width: 22.5em;
-	height: 2.2em;
-	overflow: hidden;
-	padding: 0 2em;
-	vertical-align: top;
-	text-align: left;
-	background-color: #eee;
-}
-
-#header section:hover{
-	height: auto;
-	overflow: visible;
-	border: 0.1em solid #ccc;
-	box-shadow: 0 0 2em #fff;
-	z-index: 10;
-}
-
-#header section h1{
-	font-weight: bold;
-	text-align: center;
-	padding: 0.6em 0 0.6em 0;
-	border-bottom: 0.1em solid #ccc;
-	margin: 0 0 1em 0;
-	color: #999;
-}
-
-#header section:hover h1{
-	color: #666;
-}
-
-#about:hover, #pay:hover{
-	padding-bottom: 0.25em;
-}
-
-#pay form{
-	margin-bottom: -0.5em;
-}
-
-#passwordless_login:hover{
-	padding-bottom: 1em;
-}
-
-.login_unsaved{
-	font-weight: bold;
-	color: #f55;
+#round .player.offline:after{
+	content: ')';
 }
 
 #login_link{
