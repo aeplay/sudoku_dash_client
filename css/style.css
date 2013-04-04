@@ -139,7 +139,7 @@ input[type=text], textarea{
 	border: 0.1em solid #aaa;
 }
 
-input[type=text], textarea, input[type=text] *, textarea *, #chat p{
+input[type=text], textarea, input[type=text] *, textarea *, #chat p, #chat p *{
 	-webkit-touch-callout: text;
 	-webkit-user-select: text;
 	-khtml-user-select: text;

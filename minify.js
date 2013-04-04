@@ -1,11 +1,11 @@
 var fs = require('fs');
-var cleanCSS = require('clean-css');
+var csso = require('csso');
 var UglifyJS = require("uglify-js");
 
 html = fs.readFileSync('index_full.html', 'utf-8');
 
 html = html.replace(/<link href="css\/(.+?)" rel="stylesheet">/g, function(match, submatch){
-	var css = cleanCSS.process(fs.readFileSync('css/'+submatch, 'utf-8'));
+	var css = csso.justDoIt(fs.readFileSync('css/'+submatch, 'utf-8'));
 	return "<!-- automatically inlined "+submatch+"-->\n\t\t<style>\n\t\t\t"+css+"\n\t\t</style>";
 });
 
