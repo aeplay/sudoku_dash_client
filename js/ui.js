@@ -124,16 +124,30 @@ window.Ui = function(){
 		}
 	}
 
+	var spawnPointsToast = function(pos, deltaPoints){
+		var boardCell = $('#board_'+pos);
+		var toast = $("<div>"+(deltaPoints > 0 ? "+" + deltaPoints : deltaPoints)+"</div>");
+		toast.addClass("points_toast");
+		if(deltaPoints > 0){
+			toast.addClass('good');
+		}else{
+			toast.addClass('bad');
+		}
+		toast.appendTo("#board");
+		toast.offset({left: boardCell.offset().left+boardCell.width(), top: boardCell.offset().top});
+		toast.animate({
+			opacity: 0,
+			top: '-=50'
+		}, 1000, function(){
+			toast.remove();
+		})
+	};
+
 	// Initialization
 	$(".nano").nanoScroller();
 
 	$(".copy_link input").on('click', function(event){
 		event.target.select();
-	});
-
-	$("#choose_side .side").on('click', function(event){
-		$("#choose_side .side").removeClass('selected');
-		$(event.target).closest('.side').addClass('selected');
 	});
 
 	var ui = {
@@ -401,6 +415,7 @@ window.Ui = function(){
 			},
 
 			flashCellGood: function(pos){
+				spawnPointsToast(pos, 1);
 				var boardCell = $('#board_'+pos);
 				boardCell.addClass('good');
 				setTimeout(function(){
@@ -408,24 +423,19 @@ window.Ui = function(){
 				}, 700);
 			},
 
-			tilt: function(){
-				$('#tilt_background').addClass('active');
-				setTimeout(function(){
-					$('#tilt_background').removeClass('active');
-				}, 2000);
-			},
-
 			flashConflicts: function(conflicts){
 				conflicts.forEach(function(pos){
+					spawnPointsToast(pos, -1);
 					var boardCell = $('#board_'+pos);
 					boardCell.addClass('bad');
 					setTimeout(function(){
 						boardCell.removeClass('bad');
-					}, 2000);
+					}, 1000);
 				});
 			},
 
 			flashCellAmbigous: function(pos){
+				spawnPointsToast(pos, -1);
 				var boardCell = $('#board_'+pos);
 				boardCell.addClass('ambigous');
 				boardCell.children('div').html('?');
@@ -435,10 +445,10 @@ window.Ui = function(){
 					if(boardCell.children('div').html() === '?'){
 						boardCell.children('div').html('');
 					}
-				}, 2000);
+				}, 1000);
 				setTimeout(function(){
 					fadeOut($('#ambigous_message'));
-				}, 3000);
+				}, 2000);
 			},
 
 			flashCellAlreadyFilled: function(pos){

@@ -316,6 +316,29 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	background-color: #fc0;
 }
 
+.points_toast{
+	position: absolute;
+	z-index: 4;
+	color: #fff;
+	font-size: 0.6em;
+	width: 1.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+	border-radius: 0.3em;
+	font-family: monospace;
+	font-weight: bold;
+	text-align: center;
+	opacity: 0.6;
+}
+
+.points_toast.good{
+	background-color: #4f4;
+}
+
+.points_toast.bad{
+	background-color: #f44;
+}
+
 #ambigous_message{
 	position: absolute;
 	color: #f44;
@@ -396,25 +419,6 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 #guesser table td:hover{
 	background-color: #e4e4e4;
 	color: #444;
-}
-
-#tilt_background{
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #f00;
-	opacity: 0;
-	-webkit-transition: opacity 0.1s linear;
-	z-index: -1;
-}
-
-#tilt_background.active{
-	display: block;
-	opacity: 0.1;
-	z-index: 4;
-	cursor: not-allowed;
 }
 
 #invite{

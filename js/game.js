@@ -77,6 +77,9 @@ window.Game = function(ui, server, me, restartCallback){
 					ui.guessing.stop();
 				}
 			}else if(result[0] === 'bad'){
+				var conflicts = result[1];
+				onlinePlayers[player].points -= conflicts.length;
+			}else if(result[0] === 'ambigous'){
 				onlinePlayers[player].points--;
 			}
 
@@ -133,15 +136,12 @@ window.Game = function(ui, server, me, restartCallback){
 
 					if(result[0] === 'good'){
 						ui.board.flashCellGood(pos);
-						console.log("good")
 					}else if(result[0] === 'bad'){
 						var conflicts = result[1];
 						ui.board.flashConflicts(conflicts);
-						ui.board.tilt();
 						
 					}else if(result[0] === 'ambigous'){
 						ui.board.flashCellAmbigous(pos);
-						ui.board.tilt();
 
 					}else if(result[0] === 'already_filled'){
 						ui.board.flashCellAlreadyFilled(pos);
