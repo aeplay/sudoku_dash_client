@@ -9,9 +9,18 @@ html = html.replace(/<link href="css\/(.+?)" rel="stylesheet">/g, function(match
 	return "<!-- automatically inlined "+submatch+"-->\n\t\t<style>\n\t\t\t"+css+"\n\t\t</style>";
 });
 
+allJs = "";
+
 html = html.replace(/<script src="js\/(.+?)"><\/script>/g, function(match, submatch){
-	js = UglifyJS.minify('js/'+submatch).code;
-	return "<!-- automatically inlined "+submatch+"-->\n\t<script>\n\t\t"+js+"\n\t</script>";
+	allJs += fs.readFileSync('js/'+submatch, 'utf-8') + '\n';
+	return "REPLACE_WITH_JS";
 });
+
+
+allJs = UglifyJS.minify(allJs, {fromString: true, compress: {unsafe: true}}).code;
+allJs = "<script>"+allJs+"</script>"
+
+// prevent bug that inserts matched string for $, see MDN String.replace
+html = html.replace(/REPLACE_WITH_JS(\s+REPLACE_WITH_JS)+/g, function(){return allJs});
 
 console.log(html);
