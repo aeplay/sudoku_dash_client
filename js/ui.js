@@ -425,7 +425,7 @@ window.Ui = function(){
 
 			flashConflicts: function(conflicts){
 				conflicts.forEach(function(pos){
-					spawnPointsToast(pos, -1);
+					spawnPointsToast(pos, -2);
 					var boardCell = $('#board_'+pos);
 					boardCell.addClass('bad');
 					setTimeout(function(){
@@ -435,7 +435,7 @@ window.Ui = function(){
 			},
 
 			flashCellAmbigous: function(pos){
-				spawnPointsToast(pos, -1);
+				spawnPointsToast(pos, -3);
 				var boardCell = $('#board_'+pos);
 				boardCell.addClass('ambigous');
 				boardCell.children('div').html('?');

@@ -78,9 +78,9 @@ window.Game = function(ui, server, me, restartCallback){
 				}
 			}else if(result[0] === 'bad'){
 				var conflicts = result[1];
-				onlinePlayers[player].points -= conflicts.length;
+				onlinePlayers[player].points -= 2*conflicts.length;
 			}else if(result[0] === 'ambigous'){
-				onlinePlayers[player].points--;
+				onlinePlayers[player].points -= 3;
 			}
 
 		}
