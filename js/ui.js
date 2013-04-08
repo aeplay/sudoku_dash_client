@@ -138,7 +138,7 @@ window.Ui = function(){
 		toast.animate({
 			opacity: 0,
 			top: '-=50'
-		}, 1000, function(){
+		}, 1500, function(){
 			toast.remove();
 		})
 	};
@@ -439,16 +439,18 @@ window.Ui = function(){
 				var boardCell = $('#board_'+pos);
 				boardCell.addClass('ambigous');
 				boardCell.children('div').html('?');
-				fadeIn($('#ambigous_message'));
+				setTimeout(function(){
+					fadeIn($('#ambigous_message'));
+				}, 200);
 				setTimeout(function(){
 					boardCell.removeClass('ambigous');
 					if(boardCell.children('div').html() === '?'){
 						boardCell.children('div').html('');
 					}
-				}, 1000);
+				}, 3000);
 				setTimeout(function(){
 					fadeOut($('#ambigous_message'));
-				}, 2000);
+				}, 5000);
 			},
 
 			flashCellAlreadyFilled: function(pos){

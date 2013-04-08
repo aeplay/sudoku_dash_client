@@ -320,7 +320,7 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	position: absolute;
 	z-index: 4;
 	color: #fff;
-	font-size: 0.6em;
+	font-size: 0.65em;
 	width: 1.5em;
 	height: 1.5em;
 	line-height: 1.5em;
@@ -328,7 +328,7 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	font-family: monospace;
 	font-weight: bold;
 	text-align: center;
-	opacity: 0.6;
+	opacity: 1;
 }
 
 .points_toast.good{
