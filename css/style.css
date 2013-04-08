@@ -522,12 +522,8 @@ button.good:active, input[type=button].good:active, input[type=submit].good:acti
 	vertical-align: middle;
 }
 
-#round .player.offline:before{
-	content: '(';
-}
-
-#round .player.offline:after{
-	content: ')';
+#round .player.offline{
+	text-decoration: line-through;
 }
 
 #login_link{
