@@ -379,15 +379,13 @@ window.Ui = function(){
 
 			initializeCell: function(num, pos){
 				$('#board_'+pos).removeAttr('title');
-				$('#board_'+pos).removeClass('solved');
-				$('#board_'+pos).removeClass('given');
-				$('#board_'+pos).removeClass('pending');
+				$('#board_'+pos).removeClass();
+				$('#board_'+pos).addClass('cell');
 				if(num === 0){
 					$('#board_'+pos+' div').html("");
 					$('#board_'+pos).addClass('empty');
 				}else{
 					$('#board_'+pos+' div').html(num);
-					$('#board_'+pos).removeClass('empty');
 					$('#board_'+pos).addClass('given');
 				}
 			},
