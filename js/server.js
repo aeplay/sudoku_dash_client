@@ -20,45 +20,38 @@ window.Server = function(ui){
 
 	ui.progress.attemptWebSocket();
 
-	var bullet = $.bullet('ws://'+host+'/realtime');
+	var sock = new SockJS('http://'+host+'/realtime');
 
 	ui.progress.connectingTo(host);
 
-	bullet.onopen = function(){
+	sock.onopen = function(){
 		server.send(["hello"]);
 	}
 
-	bullet.onclose = function(event){
+	sock.onclose = function(event){
 		ui.progress.connectionError(event.code);
 	};
 
 	var serverListeners = {};
 	var timeoutsForEvents = {};
 
-	bullet.onheartbeat = function(){
-        bullet.send('ping');
-    }
-
-	bullet.onmessage = function(event){
+	sock.onmessage = function(event){
 		console.log('in raw: %o', event.data);
 		if(event.data !== "pong"){
-			data = JSON.parse(event.data);
-			for(var i = 0; i < data[1].length; i++){
-				message = data[1][i];
-				type = message.shift();
-				console.log('in %o: %o', type, message);
-				if(serverListeners[type]){
-					serverListeners[type].forEach(function(listener){
-						listener(message);
-					});
-				}
-				if(timeoutsForEvents[type]){
-					timeoutsForEvents[type].forEach(function(timeout){
-						console.log('Cleared timeout for: '+type);
-						clearTimeout(timeout);
-						timeoutsForEvents[type].splice(timeoutsForEvents[type].indexOf(timeout), 1);
-					});
-				}
+			message = JSON.parse(event.data);
+			type = message.shift();
+			console.log('in %o: %o', type, message);
+			if(serverListeners[type]){
+				serverListeners[type].forEach(function(listener){
+					listener(message);
+				});
+			}
+			if(timeoutsForEvents[type]){
+				timeoutsForEvents[type].forEach(function(timeout){
+					console.log('Cleared timeout for: '+type);
+					clearTimeout(timeout);
+					timeoutsForEvents[type].splice(timeoutsForEvents[type].indexOf(timeout), 1);
+				});
 			}
 		}
 	};
@@ -75,7 +68,7 @@ window.Server = function(ui){
 		send: function(data){
 			data.push(clientId);
 			console.log('out %o', data);
-			bullet.send(JSON.stringify(data))
+			sock.send(JSON.stringify(data))
 		},
 		on: function(type, callback){
 			if(!serverListeners[type]) serverListeners[type] = [];
@@ -96,7 +89,6 @@ window.Server = function(ui){
 				timeoutsForEvents[eventType].push(timeout);
 			});
 		},
-		ready: function(){return bullet.readyState === 1},
 		retryWithNextPort: function(){
 			localStorage['portN'] = (parseInt(localStorage['portN']) + 1) % ports.length;
 			ui.progress.retryingWithAnotherPort();
@@ -104,7 +96,7 @@ window.Server = function(ui){
 			server.ignoreDisconnect();
 		},
 		ignoreDisconnect: function(){
-			bullet.onclose = function(){};
+			sock.onclose = function(){};
 		}
 	};
 
